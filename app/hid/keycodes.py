@@ -1,3 +1,5 @@
+import dataclasses
+
 # USB Usage ID values for the keycodes that TinyPilot can emit to the target
 # computer through the USB keyboard interface.
 #
@@ -12,6 +14,13 @@ MODIFIER_RIGHT_CTRL = 1 << 4
 MODIFIER_RIGHT_SHIFT = 1 << 5
 MODIFIER_RIGHT_ALT = 1 << 6
 MODIFIER_RIGHT_META = 1 << 7
+# The "Alt Gr" key is a special modifier key that is present on e.g. German
+# keyboards. There are multiple ways to emulate this key, e.g. by (a) just
+# using the "Right Alt" modifier, or (b) by using "Left Alt"+"Left Ctrl". In
+# our tests, we found that (a) seems to be the most compatible option, as it
+# appears to work on both Windows and Linux systems, whereas (b) appears to
+# only work reliably on Windows systems.
+MODIFIER_ALT_GR = MODIFIER_RIGHT_ALT
 
 KEYCODE_NONE = 0
 KEYCODE_A = 0x04
@@ -141,3 +150,9 @@ KEYCODE_RIGHT_ALT = 0xe6
 KEYCODE_RIGHT_META = 0xe7
 KEYCODE_MEDIA_PLAY_PAUSE = 0xe8
 KEYCODE_REFRESH = 0xfa
+
+
+@dataclasses.dataclass
+class Keystroke:
+    keycode: int
+    modifier: int = KEYCODE_NONE
